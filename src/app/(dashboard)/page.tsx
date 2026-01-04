@@ -1,103 +1,207 @@
 'use client';
 
 import * as React from 'react';
+import Image from 'next/image';
 import { PageHeader } from '@/components/page-header';
-import { MarketCard } from '@/components/dashboard/market-card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import {
+  FileText,
+  Lightbulb,
+  MessageCircle,
+  TrendingUp,
+} from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
+import { Button } from '@/components/ui/button';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
 
-type MarketData = {
-  name: string;
-  value: number;
-  change: number;
-  high: number;
-  low: number;
-  history: { date: string; value: number }[];
-};
+const recentVideos = [
+  {
+    id: 1,
+    title: 'The Future of Commodity Supercycles',
+    thumbnailUrl: 'https://picsum.photos/seed/video1/320/180',
+    views: '1.2M',
+    comments: 482,
+    date: '3 days ago',
+  },
+  {
+    id: 2,
+    title: 'Weekly Market Recap & Outlook',
+    thumbnailUrl: 'https://picsum.photos/seed/video2/320/180',
+    views: '890K',
+    comments: 312,
+    date: '1 week ago',
+  },
+];
 
-const initialData: Record<string, MarketData> = {
-  DXY: {
-    name: 'DXY',
-    value: 105.28,
-    change: 0.15,
-    high: 105.4,
-    low: 105.1,
-    history: Array.from({ length: 30 }, (_, i) => ({
-      date: `D-${30 - i}`,
-      value: 104 + Math.random() * 2,
-    })),
+const insights = [
+  {
+    icon: Lightbulb,
+    title: 'Top Content Idea',
+    description:
+      'Create a deep-dive video on the impact of Yen fluctuations on global trade.',
+    badge: 'High Engagement',
   },
-  Gold: {
-    name: 'Gold',
-    value: 2350.5,
-    change: -12.3,
-    high: 2365.8,
-    low: 2345.1,
-    history: Array.from({ length: 30 }, (_, i) => ({
-      date: `D-${30 - i}`,
-      value: 2300 + Math.random() * 100,
-    })),
+  {
+    icon: MessageCircle,
+    title: 'Key Audience Pain Point',
+    description:
+      'Viewers are confused about the real-world impact of DXY movements.',
+    badge: 'Recurring Theme',
   },
-  'Crude Oil': {
-    name: 'Crude Oil',
-    value: 80.1,
-    change: 1.2,
-    high: 81.5,
-    low: 79.5,
-    history: Array.from({ length: 30 }, (_, i) => ({
-      date: `D-${30 - i}`,
-      value: 78 + Math.random() * 5,
-    })),
+];
+
+const recentComments = [
+  {
+    author: 'Community Member 3',
+    comment: 'What are your thoughts on the Yen, considering the recent moves?',
+    sentiment: 'Positive',
   },
-};
+  {
+    author: 'Community Member 1',
+    comment:
+      'Incredible analysis, Dr. Shah! The section on copper was particularly eye-opening.',
+    sentiment: 'Positive',
+  },
+  {
+    author: 'Community Member 2',
+    comment: 'Thanks for the summary! Really helps to cut through the noise.',
+    sentiment: 'Neutral',
+  },
+];
 
 export default function DashboardPage() {
-  const [marketData, setMarketData] = React.useState(initialData);
-
-  React.useEffect(() => {
-    const interval = setInterval(() => {
-      setMarketData((prevData) => {
-        const newData = { ...prevData };
-        for (const key in newData) {
-          const asset = newData[key];
-          const changeFactor = (Math.random() - 0.5) * 0.1;
-          const newValue = parseFloat((asset.value * (1 + changeFactor / 100)).toFixed(2));
-          const newChange = parseFloat((newValue - asset.value).toFixed(2));
-          
-          const newHistory = [...asset.history.slice(1), { date: 'Now', value: newValue }];
-
-          newData[key] = {
-            ...asset,
-            value: newValue,
-            change: newChange,
-            high: Math.max(asset.high, newValue),
-            low: Math.min(asset.low, newValue),
-            history: newHistory,
-          };
-        }
-        return newData;
-      });
-    }, 10000); // Refresh every 10 seconds
-
-    return () => clearInterval(interval);
-  }, []);
-
   return (
-    <div className="space-y-6">
+    <div className="flex flex-col gap-6">
       <PageHeader
-        title="Market Snapshot"
-        description={`Here is your real-time market overview for ${new Date().toLocaleDateString(
-          'en-US',
-          {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-          }
-        )}.`}
+        title="Dashboard"
+        description={`Here's a snapshot of your YouTube channel's performance and audience feedback.`}
       />
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {Object.values(marketData).map((data) => (
-          <MarketCard key={data.name} data={data} />
-        ))}
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+        <div className="lg:col-span-2">
+          <Card>
+            <CardHeader>
+              <CardTitle>Recent Videos</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              {recentVideos.map((video) => (
+                <div
+                  key={video.id}
+                  className="flex flex-col gap-4 sm:flex-row"
+                >
+                  <Image
+                    src={video.thumbnailUrl}
+                    alt={video.title}
+                    width={160}
+                    height={90}
+                    className="rounded-lg object-cover"
+                    data-ai-hint="youtube thumbnail"
+                  />
+                  <div className="flex-1">
+                    <h3 className="font-headline font-semibold leading-snug">
+                      {video.title}
+                    </h3>
+                    <div className="mt-2 flex items-center gap-4 text-sm text-muted-foreground">
+                      <span>{video.views} views</span>
+                      <span>{video.comments} comments</span>
+                      <span>{video.date}</span>
+                    </div>
+                  </div>
+                  <Button variant="outline" size="sm">
+                    View Analytics
+                  </Button>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+        </div>
+        <div className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>AI-Powered Insights</CardTitle>
+              <CardDescription>
+                Derived from your latest comments.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {insights.map((insight, index) => (
+                <div key={index} className="flex gap-4">
+                  <insight.icon className="mt-1 h-5 w-5 shrink-0 text-accent" />
+                  <div>
+                    <h4 className="font-semibold">{insight.title}</h4>
+                    <p className="text-sm text-muted-foreground">
+                      {insight.description}
+                    </p>
+                    <Badge variant="secondary" className="mt-2">
+                      {insight.badge}
+                    </Badge>
+                  </div>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+        </div>
       </div>
+      <Card>
+        <CardHeader>
+          <CardTitle>Recent Comments</CardTitle>
+          <CardDescription>
+            A feed of the latest audience feedback.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="w-[180px]">Author</TableHead>
+                <TableHead>Comment</TableHead>
+                <TableHead className="w-[120px] text-right">
+                  Sentiment
+                </TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {recentComments.map((comment, index) => (
+                <TableRow key={index}>
+                  <TableCell className="font-medium">{comment.author}</TableCell>
+                  <TableCell className="text-muted-foreground">
+                    {comment.comment}
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <Badge
+                      variant={
+                        comment.sentiment === 'Positive'
+                          ? 'default'
+                          : 'secondary'
+                      }
+                      className={
+                        comment.sentiment === 'Positive'
+                          ? 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300'
+                          : ''
+                      }
+                    >
+                      {comment.sentiment}
+                    </Badge>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
     </div>
   );
 }

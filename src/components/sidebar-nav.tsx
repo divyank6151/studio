@@ -10,6 +10,7 @@ import {
   Smile,
   Users,
   SlidersHorizontal,
+  AreaChart,
 } from 'lucide-react';
 
 import {
@@ -20,6 +21,7 @@ import {
 
 export const navItems = [
   { href: '/', label: 'Dashboard', icon: LayoutGrid },
+  { href: '/market-snapshot', label: 'Market Snapshot', icon: AreaChart },
   { href: '/briefing', label: 'Daily Briefing', icon: Newspaper },
   { href: '/comment-intelligence', label: 'Comment Intelligence', icon: MessageCircle },
   { href: '/content-engine', label: 'Content Engine', icon: PenSquare },
@@ -35,7 +37,7 @@ export function SidebarNav() {
     <SidebarMenu>
       {navItems.map((item) => (
         <SidebarMenuItem key={item.href}>
-          <Link href={item.href} prefetch={false} className="w-full">
+          <Link href={item.href} prefetch={false}>
             <SidebarMenuButton
               isActive={pathname === item.href}
               tooltip={item.label}
