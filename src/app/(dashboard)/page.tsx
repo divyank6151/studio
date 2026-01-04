@@ -15,6 +15,7 @@ import {
   Lightbulb,
   MessageCircle,
   TrendingUp,
+  Smile,
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
@@ -27,6 +28,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { Progress } from '@/components/ui/progress';
 
 const recentVideos = [
   {
@@ -83,6 +85,8 @@ const recentComments = [
   },
 ];
 
+const overallSentiment = 78;
+
 export default function DashboardPage() {
   return (
     <div className="flex flex-col gap-6">
@@ -129,6 +133,29 @@ export default function DashboardPage() {
           </Card>
         </div>
         <div className="space-y-6">
+           <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Smile className="h-5 w-5 text-accent" />
+                <span>Overall Sentiment</span>
+              </CardTitle>
+              <CardDescription>
+                Audience sentiment from your latest video comments.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              <div className="flex items-baseline gap-2">
+                <span className="text-4xl font-bold tracking-tighter">
+                  {overallSentiment}
+                </span>
+                <span className="text-sm text-muted-foreground">/ 100</span>
+              </div>
+              <Progress value={overallSentiment} className="h-2" />
+              <p className="text-xs text-muted-foreground pt-1">
+                A score of 70+ is considered positive.
+              </p>
+            </CardContent>
+          </Card>
           <Card>
             <CardHeader>
               <CardTitle>AI-Powered Insights</CardTitle>
