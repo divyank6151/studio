@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import {
   LayoutGrid,
   Newspaper,
-  Youtube,
+  MessageCircle,
   PenSquare,
   Smile,
   Users,
@@ -21,7 +21,7 @@ import {
 const navItems = [
   { href: '/', label: 'Dashboard', icon: LayoutGrid },
   { href: '/briefing', label: 'Daily Briefing', icon: Newspaper },
-  { href: '/youtube-intelligence', label: 'YouTube Intelligence', icon: Youtube },
+  { href: '/comment-intelligence', label: 'Comment Intelligence', icon: MessageCircle },
   { href: '/content-engine', label: 'Content Engine', icon: PenSquare },
   { href: '/sentiment-tool', label: 'Sentiment Tool', icon: Smile },
   { href: '/community', label: 'Inner Circle', icon: Users },
@@ -35,7 +35,7 @@ export function SidebarNav() {
     <SidebarMenu>
       {navItems.map((item) => (
         <SidebarMenuItem key={item.href}>
-          <Link href={item.href} prefetch={false}>
+          <Link href={item.href} prefetch={false} className='w-full'>
             <SidebarMenuButton
               isActive={pathname === item.href}
               tooltip={item.label}
