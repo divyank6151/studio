@@ -18,7 +18,7 @@ import {
   SidebarMenuButton,
 } from '@/components/ui/sidebar';
 
-const navItems = [
+export const navItems = [
   { href: '/', label: 'Dashboard', icon: LayoutGrid },
   { href: '/briefing', label: 'Daily Briefing', icon: Newspaper },
   { href: '/comment-intelligence', label: 'Comment Intelligence', icon: MessageCircle },
@@ -35,7 +35,7 @@ export function SidebarNav() {
     <SidebarMenu>
       {navItems.map((item) => (
         <SidebarMenuItem key={item.href}>
-          <Link href={item.href} prefetch={false} className='w-full'>
+          <Link href={item.href} prefetch={false} className="w-full">
             <SidebarMenuButton
               isActive={pathname === item.href}
               tooltip={item.label}

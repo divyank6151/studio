@@ -1,3 +1,7 @@
+'use client';
+
+import * as React from 'react';
+import { usePathname } from 'next/navigation';
 import {
   Sidebar,
   SidebarContent,
@@ -6,7 +10,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from '@/components/ui/sidebar';
-import { SidebarNav } from '@/components/sidebar-nav';
+import { SidebarNav, navItems } from '@/components/sidebar-nav';
 import { Logo } from '@/components/logo';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
@@ -19,16 +23,15 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 
-export const metadata = {
-  title: 'MarketPulse Pro Dashboard',
-  description: 'Digital Research & Content Automation Dashboard',
-};
-
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const pathname = usePathname();
+  const currentPage = navItems.find((item) => item.href === pathname);
+  const pageTitle = currentPage ? currentPage.label : 'Dashboard';
+
   return (
     <SidebarProvider>
       <Sidebar collapsible="icon">
@@ -47,7 +50,11 @@ export default function DashboardLayout({
       <SidebarInset className="flex flex-col">
         <header className="sticky top-0 z-10 flex h-14 items-center gap-4 border-b bg-background/80 px-4 backdrop-blur-sm sm:px-6">
           <SidebarTrigger className="md:hidden" />
-          <div className="flex-1" />
+          <div className="flex-1">
+             <h1 className="font-headline text-xl font-semibold tracking-tight text-foreground">
+                {pageTitle}
+             </h1>
+          </div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
